@@ -48,16 +48,16 @@ class ECGRecord:
     r_peak_indices: list[int]  = field(default_factory=list)
 
 
-def load_record(record_id: str, pn_dir: str = "mitdb", channel: int = 0) -> ECGRecord:
+def load_record(record_id: str, pn_dir: str | None = "mitdb", channel: int = 0) -> ECGRecord:
     """
     Descarga (cache local) y carga un registro MIT-BIH desde PhysioNet.
 
     Parametros
     ----------
     record_id : str
-        Identificador del registro (e.g. "100").
-    pn_dir : str
-        Base de datos PhysioNet. Por defecto 'mitdb'.
+        Identificador del registro (e.g. "100" o ruta local "temp/record").
+    pn_dir : str | None
+        Base de datos PhysioNet. Por defecto 'mitdb'. Si es None, lee archivo local.
     channel : int
         Canal ECG a usar (0 = MLII, 1 = V1/V5).
 
@@ -66,9 +66,13 @@ def load_record(record_id: str, pn_dir: str = "mitdb", channel: int = 0) -> ECGR
     ECGRecord
         Objeto con senal, fs y anotaciones mapeadas a AAMI.
     """
-    # wfdb descarga y cachea automaticamente en ~/.wfdb/
-    record = wfdb.rdrecord(record_id, pn_dir=pn_dir)
-    ann    = wfdb.rdann(record_id, "atr", pn_dir=pn_dir)
+    # wfdb lee localmente si pn_dir es None
+    if pn_dir:
+        record = wfdb.rdrecord(record_id, pn_dir=pn_dir)
+        ann    = wfdb.rdann(record_id, "atr", pn_dir=pn_dir)
+    else:
+        record = wfdb.rdrecord(record_id)
+        ann    = wfdb.rdann(record_id, "atr")
 
     signal = record.p_signal[:, channel].astype(np.float32)
 

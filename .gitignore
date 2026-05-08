@@ -1,12 +1,55 @@
-# P_CIENTÍFICA ECG — .gitignore
+# =========================================================================
+# FRONTEND (Electron / Node.js)
+# =========================================================================
+frontend/node_modules/
+frontend/package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================================================================
+# BACKEND (Python)
+# =========================================================================
+# Caché de Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.env
+*.py[cod]
+*$py.class
+
+# Entornos Virtuales
 venv/
 .venv/
-outputs/
-*.keras
-*.h5
-*.wfdb/
+env/
+.env
+
+# =========================================================================
+# DATOS PESADOS Y BASES DE DATOS (No subir al repositorio)
+# =========================================================================
+# Base de datos SQLite (Evita sobreescribir el historial de tus pacientes)
+backend/database.sqlite
+
+# Directorio temporal de análisis
+backend/temp/
+
+# Base de datos MIT-BIH (Carpeta pesada de 50MB+)
+backend/mit-bih-arrhythmia-database-1.0.0/
+backend/mitdb/
+
+# Evitar cualquier archivo de PhysioNet suelto
+*.dat
+*.atr
+*.hea
+*.xws
+
+# =========================================================================
+# MODELOS Y ARTEFACTOS
+# =========================================================================
+# La carpeta outputs se llena de gráficas de entrenamiento y del modelo pesado
+# (Si necesitas subir tu modelo entrenado a GitHub, borra esta línea o usa Git LFS)
+backend/outputs/
+
+# =========================================================================
+# SISTEMA OPERATIVO Y OTROS
+# =========================================================================
+.DS_Store
+Thumbs.db
+desktop.ini

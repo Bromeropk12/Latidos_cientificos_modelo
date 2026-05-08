@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCA - Clasificador de Arritmias</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>🫀 SCA-AI</h2>
+                <p>Análisis de ECG Offline</p>
+            </div>
+            <nav>
+                <button class="nav-btn active" id="nav-analyze">Analizar Registro</button>
+                <button class="nav-btn" id="nav-history">Historial Clínico</button>
+            </nav>
+            <div class="status-indicator">
+                <div class="dot online"></div>
+                <span>Backend Python: Listo</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Analysis Section -->
+            <section id="section-analyze" class="view-section active">
+                <header>
+                    <h1>Nuevo Diagnóstico IA</h1>
+                    <p>Sube los registros Holter o MIT-BIH (.dat y .atr) para analizarlos con la CNN local.</p>
+                </header>
+                
+                <div class="card upload-card">
+                    <form id="upload-form">
+                        <div class="input-group full-width">
+                            <label for="patientName">Nombre o ID del Paciente</label>
+                            <input type="text" id="patientName" required placeholder="Ej. Paciente_MIT_100">
+                        </div>
+                        
+                        <div class="file-inputs">
+                            <div class="input-group">
+                                <label for="heaFile">Cabecera (.HEA)</label>
+                                <input type="file" id="heaFile" accept=".hea" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="datFile">Señal (.DAT)</label>
+                                <input type="file" id="datFile" accept=".dat" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="atrFile">Anotaciones (.ATR)</label>
+                                <input type="file" id="atrFile" accept=".atr" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="primary-btn" id="submit-btn">Procesar Señal y Diagnosticar</button>
+                    </form>
+                    
+                    <div id="loading" class="hidden">
+                        <div class="spinner"></div>
+                        <p>Convirtiendo a espectrogramas y procesando con Red Neuronal... <br><small>Esto tomará menos de 10 segundos.</small></p>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div id="results" class="card results-card hidden">
+                    <h2>Resultados del Análisis</h2>
+                    <div class="metrics">
+                        <div class="metric">
+                            <span class="label">Total de Latidos Evaluados</span>
+                            <span class="value" id="res-total">0</span>
+                        </div>
+                        <div class="metric highlight">
+                            <span class="label">Latidos Anormales Detectados (S, V, F)</span>
+                            <span class="value" id="res-abnormal">0</span>
+                        </div>
+                    </div>
+                    <div class="diagnosis-box" id="res-diagnosis">
+                        --
+                    </div>
+                    
+                    <!-- Contenedor para graficos de ECG -->
+                    <div id="plots-section" class="hidden" style="margin-top: 2rem;">
+                        <h3 style="margin-bottom: 1rem; color: var(--text-secondary); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Evidencia Clínica (Muestras de Arritmia Detectadas)</h3>
+                        <div class="plots-grid" id="abnormal-plots">
+                            <!-- Los graficos se insertan aqui por JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section id="section-history" class="view-section hidden">
+                <header>
+                    <h1>Base de Datos Local</h1>
+                    <p>Historial de pacientes diagnosticados almacenado en SQLite de forma privada.</p>
+                </header>
+                <div class="card table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha y Hora</th>
+                                <th>Paciente</th>
+                                <th>Total Latidos</th>
+                                <th>Anormales</th>
+                                <th>Diagnóstico Generado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <!-- Filas generadas por JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="renderer.js"></script>
+</body>
+</html>

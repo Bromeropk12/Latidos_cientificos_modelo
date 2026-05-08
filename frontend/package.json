@@ -1,0 +1,14 @@
+{
+  "name": "ecg-analyzer-app",
+  "version": "1.0.0",
+  "description": "ECG Arrhythmia Analyzer Desktop App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Antigravity",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^42.0.0"
+  }
+}
