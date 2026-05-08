@@ -1,0 +1,12 @@
+# P_CIENTÍFICA ECG — .gitignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+.venv/
+outputs/
+*.keras
+*.h5
+*.wfdb/
